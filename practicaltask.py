@@ -3,9 +3,7 @@ from typing import List, Tuple
 
 
 def default_matrix_multiplication(a: List, b: List) -> List:
-    """
-    Multiplication only for 2x2 matrices
-    """
+
     if len(a) != 2 or len(a[0]) != 2 or len(b) != 2 or len(b[0]) != 2:
         raise Exception("Matrices are not 2x2")
     new_matrix = [
@@ -30,21 +28,7 @@ def matrix_subtraction(matrix_a: List, matrix_b: List):
 
 
 def split_matrix(a: List, ) -> Tuple[List, List, List, List]:
-    """
-    Given an even length matrix, returns the top_left, top_right, bot_left, bot_right
-    quadrant.
 
-    >>> split_matrix([[4,3,2,4],[2,3,1,1],[6,5,4,3],[8,4,1,6]])
-    ([[4, 3], [2, 3]], [[2, 4], [1, 1]], [[6, 5], [8, 4]], [[4, 3], [1, 6]])
-    >>> split_matrix([
-    ...     [4,3,2,4,4,3,2,4],[2,3,1,1,2,3,1,1],[6,5,4,3,6,5,4,3],[8,4,1,6,8,4,1,6],
-    ...     [4,3,2,4,4,3,2,4],[2,3,1,1,2,3,1,1],[6,5,4,3,6,5,4,3],[8,4,1,6,8,4,1,6]
-    ... ])  # doctest: +NORMALIZE_WHITESPACE
-    ([[4, 3, 2, 4], [2, 3, 1, 1], [6, 5, 4, 3], [8, 4, 1, 6]], [[4, 3, 2, 4],
-      [2, 3, 1, 1], [6, 5, 4, 3], [8, 4, 1, 6]], [[4, 3, 2, 4], [2, 3, 1, 1],
-      [6, 5, 4, 3], [8, 4, 1, 6]], [[4, 3, 2, 4], [2, 3, 1, 1], [6, 5, 4, 3],
-      [8, 4, 1, 6]])
-    """
     if len(a) % 2 != 0 or len(a[0]) % 2 != 0:
         raise Exception("Odd matrices are not supported!")
 
@@ -150,17 +134,8 @@ def strassen(matrix1: List, matrix2: List) -> List:
 
 if __name__ == "__main__":
     matrix1 = [[ 1, 2, 3],[4, 5, 6]]
-    #     [2, 3, 4, 5],
-    #     [6, 4, 3, 1],
-    #     [2, 3, 6, 7],
-    #     [3, 1, 2, 4],
-    #     [2, 3, 4, 5],
-    #     [6, 4, 3, 1],
-    #     [2, 3, 6, 7],
-    #     [3, 1, 2, 4],
-    #     [2, 3, 4, 5],
-    #     [6, 2, 3, 1],
-    # ]
-    matrix2 = [[7, 8, 9], [10, 11, 12]]
-    # = [[0, 2, 1, 1], [16, 2, 3, 3], [2, 2, 7, 7], [13, 11, 22, 4]]
+    matrix2 = [[7, 8], [9, 10], [11, 12]]
     print(strassen(matrix1, matrix2))
+    matrix3 = [[1, 2, 3], [4, 5, 6]]
+    matrix4 = [[7, 8, 9], [10, 11, 12]]
+    print(strassen(matrix3, matrix4))
