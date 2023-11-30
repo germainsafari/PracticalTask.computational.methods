@@ -1,50 +1,45 @@
-def gauss_elimination(matrix):
-    rows, cols = len(matrix), len(matrix[0])
-
-    for i in range(min(rows, cols - 1)):
-        # Partial pivoting to avoid division by zero
-        max_row = max(range(i, rows), key=lambda x: abs(matrix[x][i]))
-        matrix[i], matrix[max_row] = matrix[max_row], matrix[i]
-
-        # Make the diagonal element 1
-        pivot = matrix[i][i]
-        if pivot != 0:
-            matrix[i] = [elem / pivot for elem in matrix[i]]
-
-        # Eliminate other rows
-        for j in range(rows):
-            if i != j:
-                factor = matrix[j][i]
-                matrix[j] = [elem_j - factor * elem_i for elem_i, elem_j in zip(matrix[i], matrix[j])]
-
-    return matrix
-
-def find_solutions(matrix):
-    rows, cols = len(matrix), len(matrix[0]) - 1
-    solutions = []
-
-    for row in matrix:
-        if all(elem == 0 for elem in row[:-1]):
-            # Check if the row is all zeros except the last element
-            if row[-1] != 0:
-                return []  # Inconsistent system
-        else:
-            solutions.append(row[-1])
-
-    # Check if there are more variables than equations (underdetermined system)
-    if rows < cols:
+def SystemSolve(matrix):
+    # Check if the matrix is empty
+    if not matrix:
         return []
 
-    return solutions
+    rows = len(matrix)
+    cols = len(matrix[0])
 
-def SystemSolve(matrix):
-    # Apply Gaussian elimination to the augmented matrix
-    reduced_matrix = gauss_elimination(matrix)
+    # Check for inconsistent system (more variables than equations)
+    if cols - 1 > rows:
+        return []
 
-    # Find solutions from the reduced echelon form
-    solutions = find_solutions(reduced_matrix)
+    for i in range(rows):
+        # Find pivot for this column
+        pivot_row = i
+        for j in range(i + 1, rows):
+            if abs(matrix[j][i]) > abs(matrix[pivot_row][i]):
+                pivot_row = j
 
-    return solutions
+        # Swap the rows for partial pivoting
+        matrix[i], matrix[pivot_row] = matrix[pivot_row], matrix[i]
+
+        # Check if the system is inconsistent
+        if matrix[i][i] == 0:
+            return []
+
+        # Normalize the pivot row
+        pivot_value = matrix[i][i]
+        for j in range(cols):
+            matrix[i][j] /= pivot_value
+
+        # Eliminate other rows
+        for k in range(rows):
+            if k != i:
+                factor = matrix[k][i]
+                for j in range(cols):
+                    matrix[k][j] -= factor * matrix[i][j]
+
+    # Extract the solutions
+    solutions = [row[-1] for row in matrix]
+
+    return solutions[:-1] if len(solutions) == cols else solutions
 
 # Examples
 print(SystemSolve([[0, 4, 2, -2], [-2, 3, 1, -7], [4, 5, 2, 4]]))
@@ -53,5 +48,5 @@ print(SystemSolve([[0, 4, 2, -2], [-2, 3, 1, -7], [4, 5, 2, 4]]))
 print(SystemSolve([[1, 3, 5], [2, 6, 5]]))
 # Output: []
 
-print(SystemSolve([[1, 3, 5], [3, -2, 4], [4, -1, 9], [7, -3, 13]]))
+print(SystemSolve([[1, 3, 5, 8], [3, -2, 4, 1], [4, -1, 9, 2], [7, -3, 13, 7]]))
 # Output: [2.0, 1.0]
