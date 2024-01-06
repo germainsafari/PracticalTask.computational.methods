@@ -17,6 +17,7 @@ def PolyInterpolate(data):
             return str(e)
     return f
 data1 = [[3, 6], [0, 3], [2, 1]]
+
 f1 = PolyInterpolate(data1)
 print(f1(0))      # Output: 3
 print(f1(2))      # Output: 1
